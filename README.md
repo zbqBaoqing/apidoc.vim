@@ -18,6 +18,6 @@ For more information about using this plugin, after installing the
 apidoc plugin, use the ":ApiDocTpl" command.
 
 You can  map a  shortcut key in your ~/.vimrc .
-eg: "nnoremap <buffer> ap :ApiDocTpl<CR>
+eg: "nnoremap \<buffer\> ap :ApiDocTpl\<CR\>
 
 If you want to add or del some  apidoc tags , you can look for template dir. 
