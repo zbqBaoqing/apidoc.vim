@@ -22,10 +22,14 @@ python << endpython
 
 import vim
 import json
+import os
 
-def readtpl():
+def readtpl(path):
+    if not path:
+        raise vim.error("Error: template path is empty.")
     data = ""
-    with open("../template/template") as f:
+    temp_path = path.rstrip("/") + "/template/template"
+    with open(temp_path) as f:
         data = f.read()
     return data
 
@@ -64,22 +68,38 @@ def write_data_2_buffer(data):
     k = -1
     for line in data.split("\n"):
         num = row + k
-        print num
         buf.append(str(line), num)
         k += 1
-
 endpython
+
 
 function! apidoc#GetFileType()
     return &filetype
 endfunction
 
+
+function! apidoc#GetFilePath()
+    let l:path = &runtimepath
+python << endpython
+plugin_path = vim.eval("l:path")
+for  path in plugin_path.split(","):
+    if path.endswith("apidoc.vim"):
+        vim.command("let l:apidoc_path = %r" % path)
+        break
+endpython
+return l:apidoc_path
+endfunction
+
 function! apidoc#Execute()
     let l:ty = apidoc#GetFileType()
+    let l:apidoc_path = apidoc#GetFilePath()
 
 python << endpython
+
+# 获取插件路径
+doc_path = vim.eval("l:apidoc_path")
 #读取apidoc模板
-tpl_data = readtpl()
+tpl_data = readtpl(doc_path)
 #获取文件类型
 filetype = vim.eval("l:ty")
 #获取apidoc支持的格式
@@ -88,8 +108,8 @@ fmt = format_by_filetype(filetype)
 fmted_data = format_data(tpl_data, **fmt)
 #对个格式化的数据写入文件
 write_data_2_buffer(fmted_data)
-endpython
 
+endpython
 endfunction
 
 if !exists(":ApiDocTpl")
