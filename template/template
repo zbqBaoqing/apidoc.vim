@@ -1,0 +1,19 @@
+@apiVersion version
+@api {method} path [title]
+@apiGroup name
+@apiDescription text
+
+@apiParam [(group)] [{type}] [field=defaultValue] [description]
+@apiParamExample [{type}] [title]
+            example
+
+@apiExample [{type}] title
+            example
+
+@apiSuccess [(group)] [{type}] field [description]
+@apiSuccessExample [{type}] [title]
+                   example
+
+@apiError [(group)] [{type}] field [description]
+@apiErrorExample [{type}] [title]
+                 example
